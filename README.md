@@ -22,6 +22,8 @@
 
 ### 🛡️ A Modular Cybersecurity Learning Toolkit
 
+Author :Rebilraj K R
+
 **Built for ethical hackers, students, and security researchers.**
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
