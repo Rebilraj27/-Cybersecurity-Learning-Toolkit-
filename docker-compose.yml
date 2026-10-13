@@ -1,0 +1,66 @@
+# =============================================================================
+# Cyber Toolkit — Docker Compose
+# Created by: Rebilraj
+# =============================================================================
+
+version: "3.9"
+
+services:
+
+  # ─── Cyber Toolkit CLI ─────────────────────────────────────────────────────
+  toolkit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cyber-toolkit:1.0.0
+    container_name: cyber-toolkit
+    hostname: cyber-toolkit
+
+    # Required for network sniffing / port scanning
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+
+    # Use host network for sniffing on Linux
+    # Comment out if you only need port scanning
+    network_mode: host
+
+    volumes:
+      # Mount pcap files, wordlists, and reports from host
+      - ./data:/app/data:rw
+      - ./captures:/app/captures:rw
+
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TERM=xterm-256color
+
+    stdin_open: true
+    tty: true
+
+    command: ["--help"]
+    restart: "no"
+
+  # ─── Optional: Local Vulnerable Target (Juice Shop) ────────────────────────
+  # For safe web-scanner practice. Remove if not needed.
+  juiceshop:
+    image: bkimminich/juice-shop:latest
+    container_name: juice-shop-lab
+    hostname: juiceshop
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    profiles: ["lab"]  # only starts with: docker compose --profile lab up
+
+  # ─── Optional: DVWA (Damn Vulnerable Web App) ──────────────────────────────
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: dvwa-lab
+    hostname: dvwa
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    profiles: ["lab"]
+
+volumes:
+  toolkit-data:
+  captures:
