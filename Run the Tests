@@ -1,0 +1,9 @@
+# Everything
+pytest
+
+# Coverage
+pytest --cov=toolkit --cov-report=term-missing --cov-report=html
+open htmlcov/index.html
+
+# Just one module
+pytest tests/test_encrypter.py -v
